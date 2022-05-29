@@ -1,5 +1,6 @@
 
 const Request = require("../models/requestModel");
+const FacultyRequest =require("../models/facultyRequestModel")
 const asyncHandler = require("express-async-handler");
 
 
@@ -10,6 +11,21 @@ const asyncHandler = require("express-async-handler");
 const addRequest = asyncHandler(async (req, res) => {
     const { user, title, lab, note, type } = req.body;
     let request = await Request.create({ user, title, lab, note, type });
+
+    if (request) {
+        res.json({
+            message: "request has been added",
+            success: true,
+        })
+    } else {
+        throw new Error("Request not created")
+    } 
+});
+
+
+const addFacultyRequest = asyncHandler(async (req, res) => {
+    const { user, name,courseCode,courseTitle,numberOfStudent, lab, type } = req.body;
+    let request = await FacultyRequest.create({ user, name,courseCode,courseTitle,numberOfStudent, lab, type });
 
     if (request) {
         res.json({
@@ -341,5 +357,5 @@ const deleteRequest = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-    addRequest, dcoRequests, approvedByDco, rejectedByDco, committeeRequest, approvedByCommittee, rejectedByCommittee, nocRequests, approvedByNoc, rejectedByNoc, allRequestAprrovedByNOC, RequestById, RequestDeadline, requestCompleted, acceptedAllRequest, acceptedSoftwareAllRequest, acceptedHardwareAllRequest, deleteRequest
+    addRequest,addFacultyRequest, dcoRequests, approvedByDco, rejectedByDco, committeeRequest, approvedByCommittee, rejectedByCommittee, nocRequests, approvedByNoc, rejectedByNoc, allRequestAprrovedByNOC, RequestById, RequestDeadline, requestCompleted, acceptedAllRequest, acceptedSoftwareAllRequest, acceptedHardwareAllRequest, deleteRequest
 };

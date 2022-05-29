@@ -5,6 +5,7 @@ const requestController = require("../controller/requestController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/add", authMiddleware.protect, requestController.addRequest)
+router.post("/addFacultyRequest", authMiddleware.protect, requestController.addFacultyRequest)
 router.get("/", authMiddleware.protect, requestController.dcoRequests)
 router.get("/dcoApproved/:_id", authMiddleware.protect, requestController.approvedByDco)
 router.get("/dcoRejected/:_id", authMiddleware.protect, requestController.rejectedByDco)
