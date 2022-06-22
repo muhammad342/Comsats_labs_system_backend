@@ -35,6 +35,7 @@ const allComplaint = asyncHandler(async (req, res) => {
   const complaints = await Complaint.find({}).populate(
     "product user lab", ""
   );
+
   if (complaints) {
     res.json(complaints);
   } else {
@@ -43,6 +44,47 @@ const allComplaint = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    All Completed Complaint
+// @route   GET /complaint
+// @access  Private
+
+const allCompletedComplaint = asyncHandler(async (req, res) => {
+  const complaint = await Complaint.find({status:"completed"})
+  if (complaint) {
+    res.json(complaint);
+  } else {
+    res.status(404);
+    throw new Error("Complaint not found");
+  }
+});
+
+// @desc    All in progress Complaint
+// @route   GET /complaint
+// @access  Private
+
+const allInProgressComplaint = asyncHandler(async (req, res) => {
+  const complaint = await Complaint.find({status:"progress"})
+  if (complaint) {
+    res.json(complaint);
+  } else {
+    res.status(404);
+    throw new Error("Complaint not found");
+  }
+});
+
+// @desc    All rejected Complaint
+// @route   GET /complaint
+// @access  Private
+
+const allRejectedComplaint = asyncHandler(async (req, res) => {
+  const complaint = await Complaint.find({status:"rejected"})
+  if (complaint) {
+    res.json(complaint);
+  } else {
+    res.status(404);
+    throw new Error("Complaint not found");
+  }
+});
 
 
 
@@ -98,6 +140,42 @@ const allComplaintAprrovedByDco = asyncHandler(async (req, res) => {
     throw new Error("Complaints not found");
   }
 });
+
+// @desc    All Complaint Approved by Dco
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintAprrovedByDcoReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({ dcoApproved: true }).populate(
+    "product user lab",
+    "name lab "
+  );
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+
+// @desc    All Complaint Rejected by Dco
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintRejectedByDco = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({ dcoApproved: false }).populate(
+    "product user lab",
+    "name lab "
+  );
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
 
 // @desc    All Complaint Approved by Dco
 // @route   GET /complaint
@@ -255,6 +333,127 @@ const allComplaintAprrovedByCommittee = asyncHandler(async (req, res) => {
     throw new Error("Complaints not found");
   }
 });
+
+
+// @desc    All Complaint Approved by Committee
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintAprrovedByCommitteeReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: true,
+    dcoApproved: true, 
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+
+// @desc    All Complaint Approved by Committee
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintRejectedByCommitteeReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: false,
+    dcoApproved: true, 
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+const allComplaintAprrovedByWorksReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: true,
+    dcoApproved: true, 
+    worksApproved:true,
+
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+
+// @desc    All Complaint Approved by Committee
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintRejectedByWorksReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: true,
+    dcoApproved: true,
+    worksApproved:false, 
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+///
+const allComplaintAprrovedByNOCReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: true,
+    dcoApproved: true, 
+    worksApproved:true,
+    nocApproved:true
+
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+
+// @desc    All Complaint Approved by Committee
+// @route   GET /complaint
+// @access  Private
+
+const allComplaintRejectedByNOCReport = asyncHandler(async (req, res) => {
+  const complaints = await Complaint.find({
+    committeApproved: true,
+    dcoApproved: true,
+    worksApproved:true,
+    nocApproved:false 
+  })
+ 
+
+  if (complaints ) {
+    res.json(complaints);
+  } else {
+    res.status(404);
+    throw new Error("Complaints not found");
+  }
+});
+
+
+
 
 // @desc    All Complaint Approved by Dco
 // @route   GET /complaint
@@ -460,4 +659,15 @@ module.exports = {
   allhardwareComplaint,
   allSoftwareComplaint,
   deleteComplaint,
+  allCompletedComplaint,
+  allInProgressComplaint,
+  allRejectedComplaint,
+  allComplaintRejectedByDco,
+  allComplaintAprrovedByDcoReport,
+  allComplaintAprrovedByCommitteeReport,
+  allComplaintRejectedByCommitteeReport,
+  allComplaintAprrovedByWorksReport,
+  allComplaintRejectedByWorksReport,
+  allComplaintAprrovedByNOCReport,
+  allComplaintRejectedByNOCReport
 };

@@ -3,9 +3,13 @@ const router = express.Router();
 
 const requestController = require("../controller/requestController");
 const authMiddleware = require("../middleware/authMiddleware");
-
+ 
 router.post("/add", authMiddleware.protect, requestController.addRequest)
+router.get("/allCompletedRequest", authMiddleware.protect, requestController.allCompletedRequest)
+router.get("/allInProgressRequests", authMiddleware.protect, requestController.allInProgressRequests)
+router.get("/allRejectedRequest", authMiddleware.protect, requestController.allRejectedRequest)
 router.post("/addFacultyRequest", authMiddleware.protect, requestController.addFacultyRequest)
+router.get("/getFacultyRequest", authMiddleware.protect, requestController.getFacultyRequests)
 router.get("/", authMiddleware.protect, requestController.dcoRequests)
 router.get("/dcoApproved/:_id", authMiddleware.protect, requestController.approvedByDco)
 router.get("/dcoRejected/:_id", authMiddleware.protect, requestController.rejectedByDco)
@@ -15,7 +19,7 @@ router.get("/committeeRejected/:_id", authMiddleware.protect, requestController.
 router.get("/noc", authMiddleware.protect, requestController.nocRequests)
 router.get("/nocApproved/:_id", authMiddleware.protect, requestController.approvedByNoc)
 router.get("/nocRejected/:_id", authMiddleware.protect, requestController.rejectedByNoc)
-router.get("/approved/noc", authMiddleware.protect, requestController.allRequestAprrovedByNOC)
+router.get("/approved/noc", authMiddleware.protect, requestController.allRequestAprrovedByNOC) 
 router.get("/:_id", authMiddleware.protect, requestController.allRequestAprrovedByNOC)
 router.post("/deadline/:_id", requestController.RequestDeadline)
 router.post("/mark/completed/:_id", requestController.requestCompleted)

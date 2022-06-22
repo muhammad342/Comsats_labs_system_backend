@@ -22,7 +22,34 @@ const addRequest = asyncHandler(async (req, res) => {
     } 
 });
 
+const allCompletedRequest = asyncHandler(async (req, res) => {
+    const request = await Request.find({status:"completed"})
+    if (request) {
+      res.json(request);
+    } else {
+      res.status(404);
+      throw new Error("request not found");
+    }
+  });
 
+  const allInProgressRequests = asyncHandler(async (req, res) => {
+    const request = await Request.find({status:"progress"})
+    if (request) {
+      res.json(request);
+    } else {
+      res.status(404);
+      throw new Error("request not found");
+    }
+  });
+  const allRejectedRequest = asyncHandler(async (req, res) => {
+    const request = await Request.find({status:"rejected"})
+    if (request) {
+      res.json(request);
+    } else {
+      res.status(404);
+      throw new Error("request not found");
+    }
+  });
 const addFacultyRequest = asyncHandler(async (req, res) => {
     const { user, name,courseCode,courseTitle,numberOfStudent, lab, type } = req.body;
     let request = await FacultyRequest.create({ user, name,courseCode,courseTitle,numberOfStudent, lab, type });
@@ -37,6 +64,19 @@ const addFacultyRequest = asyncHandler(async (req, res) => {
     }
 });
 
+
+const getFacultyRequests = asyncHandler(async (req, res) => {
+    
+    let facultyRequests = await FacultyRequest.find({}).populate('user','name');
+    if (facultyRequests) {
+        res.json({
+            message: "Successfully fetch",
+            data: facultyRequests
+        })
+    } else {
+        throw new Error("Request not created")
+    }
+});
 
 // @desc    register request
 // @route   GET  request
@@ -357,5 +397,5 @@ const deleteRequest = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-    addRequest,addFacultyRequest, dcoRequests, approvedByDco, rejectedByDco, committeeRequest, approvedByCommittee, rejectedByCommittee, nocRequests, approvedByNoc, rejectedByNoc, allRequestAprrovedByNOC, RequestById, RequestDeadline, requestCompleted, acceptedAllRequest, acceptedSoftwareAllRequest, acceptedHardwareAllRequest, deleteRequest
+    addRequest,allCompletedRequest,allInProgressRequests,allRejectedRequest,addFacultyRequest,getFacultyRequests, dcoRequests, approvedByDco, rejectedByDco, committeeRequest, approvedByCommittee, rejectedByCommittee, nocRequests, approvedByNoc, rejectedByNoc, allRequestAprrovedByNOC, RequestById, RequestDeadline, requestCompleted, acceptedAllRequest, acceptedSoftwareAllRequest, acceptedHardwareAllRequest, deleteRequest
 };
